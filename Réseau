@@ -1,0 +1,88 @@
+Réseau:
+
+Serveur DNS: correspondance entre une adresse internet compréhensible par l'utilisateur et une adresse compréhensible par le réseau lui même (1983)
+91 ouverture du WWW au publique. Croissance exponetielle d'internet entre 96 et 2000. Les années 2000 marque le début de l'explosio d'internet, du commerce en ligne etc. Très forte augmentation des profits lié à internet. Les infrastructures nécessaire à faire tourner internet ont suivi le mouvement en parallèle. 
+
+Le poids écologique d'Internet est extrême (datacenter, composant de l'ordi, etc). 
+
+LA TOPOLOGIE: Comment les ordis sont relié entre eux. 
+
+- La topologie en bus (autrefois le plus courant): Un cable principale ou se branche les ordi; Lorsqu'on envoi un message il se propage sur le cable. Tant qu'il y a de la place sur le cable on peut rajouter des machines. Une fois les ordis connecté à ce cable ils peuvent s'envoyer des informations. Ce "bus" est partagé par tout le monde. Problème de la dépendance au cable principal: un câble coupé met tout en panne. 
+
+- la Topologie en étoile: on utilise un hub. Le hub à pour fonction de répéter tout ce qu'il reçoit à tout ce qui sont branchés à lui. Le hub demande plus de câble et s'il tombe en panne il entraîne tout le réseau. Le hub à cependant l'avantage d'être plus flexible et facile à installer qu'un bus.  
+
+Classification des réseau:
+
+- LAN: généralement un seul batiment (voir plusieurs LAN par batiment). Ordinateur qui sont tous sur le même réseau dont toutes les informations des ordinateurs sont visible par tout ceux qui sont branchés. Dans les LAN comme le préimètre du réseau est faible ont peut avoir un très haut débit. On accède au réseau généralement par WIFI. 
+
+- MAN: Connecte des LAN entre eux sur une zone géorgraphique particulière (MAN Toulouse-Marseille par exemple) Débit plus faible que les LAN. Souvent relié en bus ou  par faisceau hertzienne. 
+
+- WAN: infrastructure qui connecte les MAN ensemble à l'échelle d'un pays voir d'un continent. Début plus faible qur les MAN.
+
+INTERNET: 
+
+L'idée marquante d'internet à été de dire qu'il fallait faire des réseaux partout dans le monde et les interconnectés. Le rôle d'internet est l'interconnection de tout ces réseaux et sous-réseaux. 
+
+Il à fallut décomposer ce problème en sous problème plus simple. On a diviser ce problème en différentes couches chacunes devant résoudre un sous-problème du réseau.
+
+- Support physique: type de cable, comment le protéger, etc 
+
+- Liason de données Il est capable de détecter voir de corrigé des erreurs. Comment on partage le support physique de façon à ce que tout le monde puisse partager sans que les messages ne se mélangent. Comment identifier sur quel élément du réseau je veut envoyer ce message. La technologie de la liason de donnée est ethernet.
+
+- Le réseau: s'occupe de faire passer le message depuis le routeur jusqu'au serveur. La couche réseau doit s'occuper de réguler le traffic. La technonologe tuilisée est le le code IP.
+ 
+- La couche transport: Elle s'appui sur la couche transport pour faire passer les données jusqu'à la bonne machine. Technologie TCP. 
+
+- La couche session: comment on initialise une connexion entre deux machines? 
+
+- La couche présentation: offre une uniformité du codage de l'information. Compression et cryptage des données à transmettre. 
+
+- La couche application: Protocole HTTP qui sert au navigateur de WEb de communiquer avec le serveur. FTP: protocole pour envoyer des mail. Ces protocoles sont crée de manière communautaire avec des RFC(Request for Command).
+
+En théorie les couches sont indépendantes les unes des autres. Celle du dessus va se reposer sur la couche du dessous mais sans se préoccuper de la manière dont elle s'en occupe.
+
+ETHERNET: c'est l'implémentation réelle de la couche liaison. Sans concurrence comme protocole qui s'occupe de la couche liaison. Ethernet fourni à la couche supérieur la possibilité d'envoyer des messages entre des terminaux relié directement par le même support. Le but des routeurs est d'interconnecté les réseaux.
+
+Tout les ordinateurs ont une carte ethernet avec une adresse MAC unique (écrite en hexadécimal) ce qui permet de les identifier sur un même réseau.  
+
+LA trame ethernet: en plus des données on à l'daresse mac de source et l'adresse mac de destination. Synchronisation des terminaux par Préambule + SFD. Lorsque le recepteur reçoit le message le FCS vérifie l'intéfrité des données reçues. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
