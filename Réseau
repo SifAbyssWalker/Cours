@@ -45,32 +45,73 @@ ETHERNET: c'est l'implémentation réelle de la couche liaison. Sans concurrence
 
 Tout les ordinateurs ont une carte ethernet avec une adresse MAC unique (écrite en hexadécimal) ce qui permet de les identifier sur un même réseau.  
 
-LA trame ethernet: en plus des données on à l'daresse mac de source et l'adresse mac de destination. Synchronisation des terminaux par Préambule + SFD. Lorsque le recepteur reçoit le message le FCS vérifie l'intéfrité des données reçues. 
+LA trame ethernet: en plus des données on à l'adresse mac de source et l'adresse mac de destination. Synchronisation des terminaux par Préambule + SFD. Lorsque le recepteur reçoit le message le FCS vérifie l'intégrité des données reçues. 
 
 
+Le SWITCH: identifie quelle adresse MAC est branché sur quel port et lequel est capable de faire du full duplex (empecher les collisions) ou non. GRace au switch on peut aisément connecté un très grand nombre de machines.Il ne faut pas qu'il y est de boucle sur un réseau de switch. Si l'un d'entre eu tombe en panne il peut prévoir de prendre un embranchement secondaire. Pour savoir quel cable on va activer on va arbitrairement partir du switch à numéro le plus faible. On utilise le protocole STP qui détecte les boucles enter les switch et permet suelement d'utiliser ces cable secondaire qu'en cas de panne. 
+
+Protocole ARP qui permet de faire le lien entre l'dresse de la couche réseau (IP) et l'adresse de la couche liaison (MAC). Chaque terminal garde en mémoire un tableau associatif où tel adresse IP = tel adresse MAC. 
 
 
+Protocole IP: Créé dans les années 60. On utilise aujourd'hui le IPv4 mais on commence à manquer d'adresse IP donc transition vers IPv6. Le but est de faire traverser aux infromations les différents réseau qui peuvent séparer deux terminaux. Récupérer un paquet avec une adresse source et savoir dans quelle direction il va l'envoyer. Si l'envoi à échouer c'est la couche du dessus qui s'occupe de savoir s'il faut le renvoyer. LE protocole IP transporte les msg de réseau en réseau mais comme les réseau peuvent avoir différentes capacité donc il faut parfois découper les paquets en morceaux. IP est pratique pour créer un petit réseau comme pour router à l'échelle mondial.
+
+La spécificité des adresse IP: on a deux parties distinctes: une partie code le numéro du réseau et une partie qui va coder l'identifiant de la machine à l'intérieur du réseau. 
+
+Les adresse IP sont découpée en classe: (modèle issue des années 60)
+
+CLASSE A: petite partie réseau mais grosse partie machine. Peu de réseau différent mais avec beacoup de machine possible par réseau.
+CLASSE B: moitié moitié.
+CLASSE C: grosse partie réseau, mais petite partie machine.
+
+Les masque réseau permettent au routeur de récupérer dasn l'adresse IP la partie réseau et la partie machine. 
+
+   013.011.018.009
+ET 255.000.000.000
+   ---------------
+=  013.000.000.000 = adresse du réseau sur lequel le routeur va devoir envoyer le paquet. 
+
+Le routeur fait du routage uniquement au niveau réseau. Il ne s'intéresse pas de la partie machine de l'adresse IP. 
+SI la partie machine de l'adresse IP se termine par 255 c'est qqu'on envoi le paquet sur tout les terminaux du sous-réseau.
+
+127.0.0.1: Adresse de notre machine sur notre réseau local.
+
+Du point de vue internet c'est l'adresse du routeur qui est prise en compte. Différence entre l'adresse IP sur le réseau local et l'adresse IP envoyé par le routeur pour aller sur Internet. Il envoi l'adresse IP du réseau pour n'importe quel machine branché dessus. D'un point de vue extérieur toutes les machines du réseau ont la même adresse IP.  
+
+Ces adresses privées sont normalisées. Par ex celle de classe C commence par 192.168.
+le protocole NAT fait que les machienes branchées sur un réseau ont une adresse publique commune. 
 
 
+Les routeurs ont aussi des tables de routage. Les routeurs peuvent configuré les règles de routage manuellement (routeurs connecté à des terminaux généralement). Sur les routeurs du coeur d'Internet (qui doivent géré des milliers de règles différentes) c'est un algorythme qui s'en occupe. Il y à une hierarchie entre entre les routeurs. Pour chaque destination possible dont le routeur à connaissance il à un next hop(étape suivante) déterminé par sa table de routage. Il existe également une route par défaut pour chaque routeur. Cette route mène vers le routeur le plus proche menant à Internet. Chaque routeur connait la topologie de tout les autres routeurs de même niveau. Chaque routeur à autant d'adresse IP que de réseau auquel il est connecté. 
 
 
+Dès les années 90 ils sont rendu compte qu'ils auraient peut être pas assez d'adresse IP avec le système de classe mis en place. Ont à créer le CIDR à la fin des années 90. LE masque réseau devient arbitraire:
+
+172.013.000.000/17
+255.255.128.000
+----------------
+172.013.127.254
+
+TCP: Point de passage pour faire des connexions réseau. TCP s'occupe de remettre dans l'ordre les paquets envoyé en IP. COntrôle de flux: faire en sorte que lorsqu'il y a deux terminaux qui communiquent ils se passent les données à une vitesse qui convient au deux (= vitesse d'envoi des données à moduler en fonction de la vitesse de lecture du terminal recepteur). Contrôle de congestion: permet de vérifier que TCP n'envoi pas trop de donnée pour éviter de saturer le réseau.
+
+TCP assure l'initialisation des com entre les terminaux. Multiplexage: Fait en sorte que les différente appli du terminal n'interfère pas entre elle. Pour initialiser la connexion ils ont initialisé la connexion client/serveur: C'est le client qui entame la conversation en envoyant une requête au serveur. Le port réseau perme d'identifier les communication. Protocole d'extrémité: seul les terminaux exécute TCP (pas les routeurs, ni les switch). 
+
+Lorsqu'on établit une connexion TCP on à un canal pour lire et un canal pour écrire (full-duplex). L'application WEB se trouve sur le port 80 du serveur. Le port du client (où la réponse du serveur est reçu) est dyamique c'est à dire qu'il est défini aléatoirement à chaque connexion TCP. Environs 65000 port sur un terminal (tableau dans la mémoire vive). Par convention 1024 port sont réservé pour les serveur Web. Chaque protocole d'application à un numéro de port qui lui est attribué de façon standard. 
+
+La fenêtre TCP est le fait qu'on ne peut pas envoyer plus de 4 paquets avant d'avoir reçu l'accusé de reception du premier. C'est ce qui permet d'éviter la congestion du réseau et de contrôler le flux.
 
 
+Protocole applicatif: protocole de communication qui sert à codifier les echanges d'infos entre les programmes. On dit applicatif car on parle des protocoles au dessus de la pile réseau. 
 
+- DNS Domain Name Server: inventé dans les 80. Le but est de faire une correspondance entre des nom "humain" et les adresses IP. A chaque adresse IP correspond un nom. Base de donnée à l'échelle mondial. Le DNS peut faire de la balance de charge entre serveur (les noms les plus demandé peuvent correspondre à des adresses IP différentes). 
 
+Modèle hierarchique: hierarchique par rapport aux points qui séparent une adresse textuelle
+Le serveur racine aiguille juste vers les différentes extensions (.fr, .com, .org, etc). Les serveurs qui gère les extensions de domaines sont duppliqué pour éviter qu'en cas de panne le réseau tombe.
 
+Quand on fait une requete vers un nom de serveur on fait une requete vers le serveur DNS pour obtenir accèder au nom de domaine qui nous intéresse. 
 
-
-
-
-
-
-
-
-
-
-
-
+DHCP: protocole qui permet d'attribuer des adresses IP quand on se connecte à un nouveau réseau. 
+FTP: transfert de fichier.
+Routage en oignon TOR: protocole qui permet d'anonymiser les connexions sur internet. 
 
 
 
